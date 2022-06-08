@@ -11,7 +11,7 @@ var in_area = false
 
 var dead = false
 
-var deathEffect = preload("res://EnemyExplosion.tscn")
+var deathEffect = preload("res://Enemies/EnemyExplosion.tscn")
 
 func _ready():
 	pass

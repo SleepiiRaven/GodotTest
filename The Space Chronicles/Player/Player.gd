@@ -9,7 +9,7 @@ const BUL_SPD = 500
 var vel = Vector2.ZERO
 
 #Preloads
-var bullet = preload("res://Bullet.tscn")
+var bullet = preload("res://Player/Bullet/Bullet.tscn")
 
 func _ready():
 	pass
