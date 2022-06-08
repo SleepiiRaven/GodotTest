@@ -31,6 +31,7 @@ func _physics_process(_delta):
 		
 
 		move_and_collide(motion)
+		
 func _on_Hitbox_body_entered(body):
 	if "Bullet" in body.name:
 		if dead == false:

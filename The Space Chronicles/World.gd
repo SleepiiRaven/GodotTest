@@ -1,8 +1,8 @@
 extends Node2D
 
-var enemy = 20
+var enemy = 21
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	var enemy_list = get_tree().get_nodes_in_group("enemy")
 	enemy = enemy_list.size()
 	for i in enemy:

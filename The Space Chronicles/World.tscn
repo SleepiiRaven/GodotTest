@@ -103,7 +103,7 @@ position = Vector2( 39, 610 )
 [node name="Enemy20" parent="YSort" instance=ExtResource( 4 )]
 position = Vector2( -100, 599 )
 
-[node name="Boss" parent="YSort" instance=ExtResource( 8 )]
+[node name="EnemyBoss" parent="YSort" instance=ExtResource( 8 )]
 position = Vector2( 1154, 190 )
 
 [node name="CanvasLayer" parent="." instance=ExtResource( 3 )]
