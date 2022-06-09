@@ -1,17 +1,25 @@
 extends KinematicBody2D
 
+signal dead
+
 const BUL_SPD = 500
-const MIN_SPD = .2
-const MAX_SPD = 1
-var speed = 1
+const SPE_BUL_SPD = 300
+const MIN_SPD = .4
+const MAX_SPD = 2
+var speed = 2
 var vel = Vector2()
 
 var hp = 50
 var in_area = false
 var dead = false
 var blt_cd = false
+var player_detected = false
+var atk_circle_showing = false
+var stuck = false
 
-var deathEffect = preload("res://Enemies/EnemyExplosion.tscn")
+var player_pos
+
+var deathEffect = preload("res://Enemies/BossExplosion.tscn")
 var bullet = preload("res://Enemies/EnemyBullet/EnemyBlt.tscn")
 
 enum {
@@ -25,55 +33,59 @@ var state = CHASE
 
 func _ready():
 	$StateTimer.start()
-	$ShootCooldown.wait_time = rand_range(0.3, 2)
+	$ShootCooldown.wait_time = rand_range(0.1, 1)
 
 func _physics_process(_delta):
-	if dead == false:
+	if dead == false && player_detected == true: 
 		match state:
 			CHASE:
-				chase()
+				chase(get_parent().get_node("Player").position)
 			SHOOT:
 				var player = get_parent().get_node("Player")
 				look_at(player.position)
 				if !blt_cd:
-					shoot()
+					$ShootCooldown.wait_time = rand_range(0.1, 1)
+					shoot(BUL_SPD)
 			ATTACK:
 				attack()
 		
 		
 
-func chase():
+func chase(pos):
 	var motion = Vector2()
-	var player = get_parent().get_node("Player")
 	
-	motion += (Vector2(player.position) - position)
-	look_at(player.position)
-	
-	if in_area && speed > MIN_SPD:
-		speed -= .1
-	elif !in_area && speed != MAX_SPD:
-		speed += .1
+	motion += (Vector2(pos) - position)
+	look_at(pos)
 	
 	motion = motion.normalized() * speed
 
 	move_and_collide(motion)
 
-func shoot():
+func shoot(spd):
 	var bullet_instance = bullet.instance()
 	bullet_instance.position = get_global_position()
 	bullet_instance.rotation_degrees = rotation_degrees
-	bullet_instance.apply_impulse(Vector2(), Vector2(BUL_SPD, 0).rotated(rotation))
+	bullet_instance.apply_impulse(Vector2(), Vector2(spd, 0).rotated(rotation))
 	get_tree().get_root().call_deferred("add_child", bullet_instance)
 	$ShootSound.play()
-	$ShootCooldown.wait_time = rand_range(0.3, 2)
 	$ShootCooldown.start()
 	blt_cd = true
 	
 
 func attack():
-	pass
+	var player = get_parent().get_node("Player")
+	player_pos = player.position
+	look_at(player_pos)
+	if !blt_cd:
+		$ShootCooldown.wait_time = rand_range(0.3, 3)
+		shoot(SPE_BUL_SPD)
+		rotation_degrees += 25
+		shoot(SPE_BUL_SPD)
+		rotation_degrees -= 50
+		shoot(SPE_BUL_SPD)
 
 func _on_Hitbox_body_entered(body):
+	
 	if "Bullet" in body.name:
 		if dead == false:
 			if hp == 1:
@@ -81,6 +93,7 @@ func _on_Hitbox_body_entered(body):
 				effect.global_position = global_position
 				get_tree().current_scene.add_child(effect)
 				$Sprite.visible = false
+				emit_signal("dead")
 				$CollisionShape2D.call_deferred("set", "disabled", true)
 				set("monitoring", false)
 				$AnimationPlayer.play("LightFade")
@@ -96,13 +109,6 @@ func die():
 
 # AI Stuff Goes Here #
 
-func _on_SlowBubble_body_entered(body):
-	if "Player" in body.name:
-		in_area = true
-
-func _on_SlowBubble_body_exited(body):
-	if "Player" in body.name:
-		in_area = false
 
 func _on_StateTimer_timeout():
 	$StateTimer.wait_time = rand_range(2,10)
@@ -118,3 +124,11 @@ func _on_StateTimer_timeout():
 
 func _on_ShootCooldown_timeout():
 	blt_cd = false
+
+func _on_PlayerDetect_body_entered(body):
+	if "Player" in body.name:
+		player_detected = true
+
+func _on_PlayerDetect_body_exited(body):
+	if "Player" in body.name:
+		player_detected = false
