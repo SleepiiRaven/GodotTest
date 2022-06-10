@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/DrowningInHatred.mp3-1d7deca987f55d877b7268d2cf376b0f.mp3str"
+
+[deps]
+
+source_file="res://Sound/DrowningInHatred.mp3"
+dest_files=[ "res://.import/DrowningInHatred.mp3-1d7deca987f55d877b7268d2cf376b0f.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

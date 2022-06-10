@@ -2,6 +2,10 @@ extends Node2D
 
 var enemy = 21
 
+func _ready():
+	$MusicOff.play("MusicIn")
+	$MusicPlayer.play()
+
 func _physics_process(_delta):
 	
 	var enemy_list = get_tree().get_nodes_in_group("enemy")
@@ -14,11 +18,15 @@ func _physics_process(_delta):
 func _on_BossKillTimer_timeout():
 	$CanvasLayer/AnimationPlayer.play("Fade")
 
-func _on_AnimationPlayer_animation_finished(anim_name):
+func _on_AnimationPlayer_animation_finished(_anim_name):
 	$CanvasLayer/BossKillText.visible = false
 
 func _on_EnemyBoss_dead():
 	$CanvasLayer/BossKillText.text = "Voltoris Vanquished!"
 	$CanvasLayer/BossKillText.visible = true
 	$BossKillTimer.start()
-	
+	$MusicOff.play("MusicFade")
+
+func _on_Player_dead():
+	$MusicOff.play("MusicFade")
+	$CanvasLayer/DeathMenu.is_paused = true
