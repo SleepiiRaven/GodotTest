@@ -8,6 +8,7 @@ const ACC = 1000
 const FRI = 1000
 const BUL_SPD = 500
 
+var shoot_cd = false
 var dead = false
 var vel = Vector2.ZERO
 
@@ -34,8 +35,10 @@ func _physics_process(delta):
 		#actual movement
 		move()
 		
-		if Input.is_action_just_pressed("fire"):
+		if Input.is_action_pressed("fire") and !shoot_cd:
 			fire()
+			shoot_cd = true
+			$ShootCooldown.start()
 
 
 func move():
@@ -62,3 +65,6 @@ func _on_Hitbox_body_entered(body):
 # ROLL STUFF HERE! #
 
 # ANIMATION STUFF HERE! #
+
+func _on_Timer_timeout():
+	shoot_cd = false
