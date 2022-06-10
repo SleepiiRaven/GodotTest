@@ -37,28 +37,26 @@ align = 1
 valign = 1
 
 [node name="MainMenu" type="VBoxContainer" parent="."]
-visible = false
 margin_left = 31.0
 margin_top = 71.0
 margin_right = 71.0
 margin_bottom = 130.0
 
 [node name="StartBtn" type="Button" parent="MainMenu"]
-margin_top = 26.0
-margin_right = 300.0
-margin_bottom = 43.0
+margin_right = 72.0
+margin_bottom = 17.0
 text = "Start"
 
 [node name="SettingsBtn" type="Button" parent="MainMenu"]
-margin_top = 47.0
-margin_right = 300.0
-margin_bottom = 64.0
+margin_top = 21.0
+margin_right = 72.0
+margin_bottom = 38.0
 text = "Settings"
 
 [node name="QuitBtn" type="Button" parent="MainMenu"]
-margin_top = 68.0
-margin_right = 300.0
-margin_bottom = 85.0
+margin_top = 42.0
+margin_right = 72.0
+margin_bottom = 59.0
 text = "quit"
 
 [node name="SettingsMenu" type="Popup" parent="."]
