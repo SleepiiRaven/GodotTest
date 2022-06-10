@@ -98,7 +98,7 @@ func _on_Hitbox_body_entered(body):
 				$CollisionShape2D.call_deferred("set", "disabled", true)
 				set("monitoring", false)
 				$AnimationPlayer.play("LightFade")
-				$ExplosionSound.play()
+				$DeathSound.play()
 				dead = true
 				effect.connect("exploded", self, "die")
 			else:

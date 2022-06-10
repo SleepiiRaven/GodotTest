@@ -3,7 +3,7 @@ extends KinematicBody2D
 signal dead
 
 #Varibles
-const MAX_SPD = 300
+const MAX_SPD = 250
 const ACC = 1000
 const FRI = 1000
 const BUL_SPD = 500

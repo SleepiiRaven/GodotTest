@@ -209,8 +209,10 @@ anims/MusicFade = SubResource( 5 )
 anims/MusicIn = SubResource( 6 )
 
 [node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
+pause_mode = 2
 stream = ExtResource( 9 )
 
+[connection signal="dead" from="YSort/Player" to="." method="_on_Player_dead"]
 [connection signal="animation_finished" from="CanvasLayer/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="timeout" from="BossKillTimer" to="." method="_on_BossKillTimer_timeout"]
 

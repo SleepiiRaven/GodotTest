@@ -10,6 +10,7 @@ var blt_cd = false
 var in_area = false
 var shoot_range = false
 
+var health = 1
 var dead = false
 
 var bullet = preload("res://Enemies/EnemyBullet/EnemyBlt.tscn")
@@ -52,7 +53,7 @@ func shoot(spd):
 
 func _on_Hitbox_body_entered(body):
 	if "Bullet" in body.name:
-		if dead == false:
+		if dead == false and health == 1:
 			var effect = deathEffect.instance()
 			effect.global_position = global_position
 			get_tree().current_scene.add_child(effect)
@@ -60,9 +61,12 @@ func _on_Hitbox_body_entered(body):
 			$CollisionShape2D.call_deferred("set", "disabled", true)
 			set("monitoring", false)
 			$AnimationPlayer.play("LightFade")
-			$ExplosionSound.play()
+			$DeathSound.play()
 			dead = true
 			effect.connect("exploded", self, "die")
+		elif dead == false:
+			$ExplosionSound.play()
+			health -= 1
 
 func die():
 	queue_free()
