@@ -34,6 +34,7 @@ var state = CHASE
 
 func _ready():
 	$StateTimer.start()
+	randomize()
 	$ShootCooldown.wait_time = rand_range(0.1, 1)
 
 func _physics_process(_delta):
@@ -45,6 +46,7 @@ func _physics_process(_delta):
 				var player = get_parent().get_node("Player")
 				look_at(player.position)
 				if !blt_cd:
+					randomize()
 					$ShootCooldown.wait_time = rand_range(0.1, 1)
 					shoot(BUL_SPD)
 			ATTACK:
@@ -78,6 +80,7 @@ func attack():
 	player_pos = player.position
 	look_at(player_pos)
 	if !blt_cd:
+		randomize()
 		$ShootCooldown.wait_time = rand_range(0.3, 3)
 		shoot(SPE_BUL_SPD)
 		rotation_degrees += 25
@@ -115,6 +118,7 @@ func die():
 
 
 func _on_StateTimer_timeout():
+	randomize()
 	$StateTimer.wait_time = rand_range(2,10)
 	$StateTimer.start()
 	var statenumber = randi() % 3

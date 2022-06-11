@@ -10,12 +10,13 @@ var blt_cd = false
 var in_area = false
 var shoot_range = false
 
+var powerup_chance = 20
 var health = 1
 var dead = false
 
 var bullet = preload("res://Enemies/EnemyBullet/EnemyBlt.tscn")
 var deathEffect = preload("res://Enemies/EnemyExplosion.tscn")
-
+var powerup = preload("res://GUI/PowerUp.tscn")
 
 func _ready():
 	pass
@@ -37,6 +38,7 @@ func _physics_process(_delta):
 
 		move_and_collide(motion)
 		if !blt_cd and shoot_range:
+			randomize()
 			$ShootCooldown.wait_time = rand_range(0.3, 2)
 			shoot(BUL_SPD)
 
@@ -64,6 +66,12 @@ func _on_Hitbox_body_entered(body):
 			$DeathSound.play()
 			dead = true
 			effect.connect("exploded", self, "die")
+			randomize()
+			var powerupno = round(rand_range(0, powerup_chance))
+			if powerupno == powerup_chance:
+				var powerup_instance = powerup.instance
+				powerup.global_position = global_position
+				get_tree().current_scene.add_child(powerup_instance)
 		elif dead == false:
 			$ExplosionSound.play()
 			health -= 1
