@@ -3,14 +3,18 @@ extends KinematicBody2D
 signal dead
 
 #Varibles
-const MAX_SPD = 250
-const ACC = 1000
-const FRI = 1000
-const BUL_SPD = 500
+var MAX_SPD = 250
+var ACC = 1000
+var FRI = 1000
+var BUL_SPD = 500
+var HP = 1
 
+var invincible = false
+var current_powerup = null
 var shoot_cd = false
 var dead = false
 var vel = Vector2.ZERO
+var picked_up_powerup = false
 
 #Preloads
 var bullet = preload("res://Player/Bullet/Bullet.tscn")
@@ -39,6 +43,39 @@ func _physics_process(delta):
 			fire()
 			shoot_cd = true
 			$ShootCooldown.start()
+			
+	
+	match current_powerup:
+		"double":
+			picked_up_powerup = true
+			current_powerup = null
+			pass
+			$PowerupTimer.start()
+		"health":
+			picked_up_powerup = true
+			current_powerup = null
+			HP = 2
+			$PowerupTimer.start()
+		"speed":
+			picked_up_powerup = true
+			current_powerup = null
+			BUL_SPD = 800
+			$ShootCooldown.wait_time = 0.08
+			$PowerupTimer.start()
+		"shield":
+			picked_up_powerup = true
+			current_powerup = null
+			pass
+			$PowerupTimer.start()
+		"triple":
+			picked_up_powerup = true
+			current_powerup = null
+			pass
+			$PowerupTimer.start()
+		
+	if picked_up_powerup:
+		$Powerup.play()
+		picked_up_powerup = false
 
 
 func move():
@@ -59,8 +96,15 @@ func kill():
 	
 func _on_Hitbox_body_entered(body):
 	if "Enemy" in body.name:
-		if body.get_node("Sprite").visible == true:
-			kill()
+		if body.get_node("Sprite").visible == true and !invincible:
+			if HP == 1:
+				kill()
+			else:
+				HP -= 1
+				invincible = true
+				$Invincibility.start()
+				$Hit.play()
+				
 
 # ROLL STUFF HERE! #
 
@@ -68,3 +112,14 @@ func _on_Hitbox_body_entered(body):
 
 func _on_Timer_timeout():
 	shoot_cd = false
+
+func _on_Invincibility_timeout():
+	invincible = false
+
+func _on_PowerupTimer_timeout():
+	MAX_SPD = 250
+	ACC = 1000
+	FRI = 1000
+	BUL_SPD = 500
+	HP = 1
+	$ShootCooldown.wait_time = 0.1

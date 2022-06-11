@@ -5,7 +5,7 @@ const MAX_SPD = 3
 var speed = 3
 var vel = Vector2()
 
-var powerup_chance = 20
+var powerup_chance = 2
 var health = 3
 var in_area = false
 var dead = false
@@ -51,8 +51,8 @@ func _on_Hitbox_body_entered(body):
 			randomize()
 			var powerupno = round(rand_range(0, powerup_chance))
 			if powerupno == powerup_chance:
-				var powerup_instance = powerup.instance
-				powerup.global_position = global_position
+				var powerup_instance = powerup.instance()
+				powerup_instance.global_position = global_position
 				get_tree().current_scene.add_child(powerup_instance)
 		elif dead == false:
 			$ExplosionSound.play()
