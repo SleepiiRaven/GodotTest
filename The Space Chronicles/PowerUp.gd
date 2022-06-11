@@ -33,5 +33,5 @@ func _on_PowerUp_body_entered(body):
 				body.current_powerup = "shield"
 			triple:
 				body.current_powerup = "triple"
-			
+		get_parent().get_node("CanvasLayer").get_node("PowerupGUI").get_node("Sprite").texture = powerup
 		queue_free()

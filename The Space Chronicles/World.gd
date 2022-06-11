@@ -5,6 +5,7 @@ var enemy = 21
 func _ready():
 	$MusicOff.play("MusicIn")
 	$MusicPlayer.play()
+	print(get_tree().get_current_scene())
 
 func _unhandled_input(event):
 	if event.is_action_pressed("fullscreen"):

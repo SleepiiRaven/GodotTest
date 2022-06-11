@@ -10,7 +10,7 @@ var blt_cd = false
 var in_area = false
 var shoot_range = false
 
-var powerup_chance = 20
+var powerup_chance = 10
 var health = 1
 var dead = false
 
@@ -69,9 +69,9 @@ func _on_Hitbox_body_entered(body):
 			randomize()
 			var powerupno = round(rand_range(0, powerup_chance))
 			if powerupno == powerup_chance:
-				var powerup_instance = powerup.instance
-				powerup.global_position = global_position
-				get_tree().current_scene.add_child(powerup_instance)
+				var powerup_instance = powerup.instance()
+				powerup_instance.global_position = global_position
+				get_tree().current_scene.call_deferred("add_child", powerup_instance)
 		elif dead == false:
 			$ExplosionSound.play()
 			health -= 1

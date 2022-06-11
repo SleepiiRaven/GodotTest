@@ -2,14 +2,14 @@ extends KinematicBody2D
 
 signal dead
 
-const BUL_SPD = 500
-const SPE_BUL_SPD = 300
-const MIN_SPD = .4
-const MAX_SPD = 2
-var speed = 2
+const BUL_SPD = 600
+const SPE_BUL_SPD = 400
+const MIN_SPD = .5
+const MAX_SPD = 2.3
+var speed = 2.3
 var vel = Vector2()
 
-var hp = 50
+var hp = 75
 var in_area = false
 var dead = false
 var blt_cd = false
@@ -26,7 +26,8 @@ var bullet = preload("res://Enemies/EnemyBullet/EnemyBlt.tscn")
 enum {
 	CHASE,
 	SHOOT,
-	ATTACK
+	ATTACK,
+	RUSH
 }
 
 var state = CHASE
@@ -49,6 +50,9 @@ func _physics_process(_delta):
 					shoot(BUL_SPD)
 			ATTACK:
 				attack()
+			RUSH:
+				$ShootCooldown.wait_time = rand_range(0.05, 0.5)
+				rush()
 		
 		
 
@@ -85,6 +89,11 @@ func attack():
 		rotation_degrees -= 50
 		shoot(SPE_BUL_SPD)
 
+func rush():
+	rotation_degrees += 5
+	if !blt_cd:
+		shoot(BUL_SPD)
+
 func _on_Hitbox_body_entered(body):
 	
 	if "Bullet" in body.name:
@@ -115,9 +124,9 @@ func die():
 
 
 func _on_StateTimer_timeout():
-	$StateTimer.wait_time = rand_range(2,10)
+	$StateTimer.wait_time = rand_range(2,5)
 	$StateTimer.start()
-	var statenumber = randi() % 3
+	var statenumber = randi() % 4
 	match statenumber:
 		0:
 			state = CHASE
@@ -125,12 +134,14 @@ func _on_StateTimer_timeout():
 			state = SHOOT
 		2:
 			state = ATTACK
+		3:
+			state = RUSH
 
 func _on_ShootCooldown_timeout():
 	blt_cd = false
 
 func _on_PlayerDetect_body_entered(body):
-	if "Player" in body.name:
+	if "Player" in body.name || "Bullet" in body.name:
 		player_detected = true
 
 func _on_PlayerDetect_body_exited(body):
