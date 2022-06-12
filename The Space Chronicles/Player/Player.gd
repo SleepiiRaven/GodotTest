@@ -64,6 +64,8 @@ func _physics_process(delta):
 			doubled = true
 			doubled_now = true
 			$PowerupTimer.start()
+			if get_parent().has_node("Player2"):
+				get_parent().get_node("Player2").queue_free()
 		"health":
 			picked_up_powerup = true
 			current_powerup = null
@@ -77,6 +79,8 @@ func _physics_process(delta):
 			doubled = false
 			HP = 2
 			$PowerupTimer.start()
+			if get_parent().has_node("Player2"):
+				get_parent().get_node("Player2").queue_free()
 		"speed":
 			picked_up_powerup = true
 			current_powerup = null
@@ -90,6 +94,8 @@ func _physics_process(delta):
 			BUL_SPD = 800
 			$ShootCooldown.wait_time = 0.08
 			$PowerupTimer.start()
+			if get_parent().has_node("Player2"):
+				get_parent().get_node("Player2").queue_free()
 		"shield":
 			picked_up_powerup = true
 			current_powerup = null
@@ -103,6 +109,8 @@ func _physics_process(delta):
 			doubled = false
 			shielded = true
 			$PowerupTimer.start()
+			if get_parent().has_node("Player2"):
+				get_parent().get_node("Player2").queue_free()
 		"triple":
 			MAX_SPD = 250
 			ACC = 1000
@@ -116,12 +124,15 @@ func _physics_process(delta):
 			current_powerup = null
 			tripled = true
 			$PowerupTimer.start()
+			if get_parent().has_node("Player2"):
+				get_parent().get_node("Player2").queue_free()
 	
 	if doubled and doubled_now:
 		var player_instance = load("res://Player/Player.tscn").instance()
 		player_instance.global_position = global_position + Vector2(0,20)
 		get_parent().add_child(player_instance)
 		doubled_now = false
+		
 	
 	if picked_up_powerup:
 		$Powerup.play()
@@ -208,3 +219,5 @@ func _on_PowerupDeleteTimer_timeout():
 	doubled = false
 	get_parent().get_parent().get_node("CanvasLayer").get_node("PowerupGUI").get_node("BlinkAnimationPlayer").play("Stop")
 	get_parent().get_parent().get_node("CanvasLayer").get_node("PowerupGUI").get_node("Sprite").texture = null
+	if get_parent().has_node("Player2"):
+			get_parent().get_node("Player2").queue_free()
