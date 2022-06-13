@@ -3,11 +3,14 @@ extends KinematicBody2D
 signal dead
 
 #Varibles
+#IF YOU CHANGE MAX SPD MAKE SURE TO CHANGE IT AT THE BOTTOM TOO
 var MAX_SPD = 250
 var ACC = 1000
 var FRI = 1000
 var BUL_SPD = 500
 var HP = 1
+
+
 
 var invincible = false
 var current_powerup = null
@@ -43,6 +46,7 @@ func _physics_process(delta):
 		#actual movement
 		move()
 		
+		
 		if Input.is_action_pressed("fire") and !shoot_cd:
 			fire()
 			shoot_cd = true
@@ -64,8 +68,9 @@ func _physics_process(delta):
 			doubled = true
 			doubled_now = true
 			$PowerupTimer.start()
-			if get_parent().has_node("Player2"):
-				get_parent().get_node("Player2").queue_free()
+			for i in get_tree().get_nodes_in_group("player"):
+				if i.name != "Player":
+					i.queue_free()
 		"health":
 			picked_up_powerup = true
 			current_powerup = null
@@ -79,8 +84,9 @@ func _physics_process(delta):
 			doubled = false
 			HP = 2
 			$PowerupTimer.start()
-			if get_parent().has_node("Player2"):
-				get_parent().get_node("Player2").queue_free()
+			for i in get_tree().get_nodes_in_group("player"):
+				if i.name != "Player":
+					i.queue_free()
 		"speed":
 			picked_up_powerup = true
 			current_powerup = null
@@ -94,8 +100,9 @@ func _physics_process(delta):
 			BUL_SPD = 800
 			$ShootCooldown.wait_time = 0.08
 			$PowerupTimer.start()
-			if get_parent().has_node("Player2"):
-				get_parent().get_node("Player2").queue_free()
+			for i in get_tree().get_nodes_in_group("player"):
+				if i.name != "Player":
+					i.queue_free()
 		"shield":
 			picked_up_powerup = true
 			current_powerup = null
@@ -109,8 +116,9 @@ func _physics_process(delta):
 			doubled = false
 			shielded = true
 			$PowerupTimer.start()
-			if get_parent().has_node("Player2"):
-				get_parent().get_node("Player2").queue_free()
+			for i in get_tree().get_nodes_in_group("player"):
+				if i.name != "Player":
+					i.queue_free()
 		"triple":
 			MAX_SPD = 250
 			ACC = 1000
@@ -124,8 +132,9 @@ func _physics_process(delta):
 			current_powerup = null
 			tripled = true
 			$PowerupTimer.start()
-			if get_parent().has_node("Player2"):
-				get_parent().get_node("Player2").queue_free()
+			for i in get_tree().get_nodes_in_group("player"):
+				if i.name != "Player":
+					i.queue_free()
 	
 	if doubled and doubled_now:
 		var player_instance = load("res://Player/Player.tscn").instance()
@@ -143,6 +152,7 @@ func _physics_process(delta):
 func move():
 	vel = move_and_slide(vel)
 	look_at(get_global_mouse_position())
+
 
 # GUN STUFF HERE! #
 func fire():
@@ -189,7 +199,7 @@ func _on_Hitbox_body_entered(body):
 					$Hit.play()
 					if HP == 1:
 						get_parent().get_parent().get_node("CanvasLayer").get_node("PowerupGUI").get_node("Sprite").texture = null
-				
+		
 
 # ROLL STUFF HERE! #
 
@@ -219,5 +229,6 @@ func _on_PowerupDeleteTimer_timeout():
 	doubled = false
 	get_parent().get_parent().get_node("CanvasLayer").get_node("PowerupGUI").get_node("BlinkAnimationPlayer").play("Stop")
 	get_parent().get_parent().get_node("CanvasLayer").get_node("PowerupGUI").get_node("Sprite").texture = null
-	if get_parent().has_node("Player2"):
-			get_parent().get_node("Player2").queue_free()
+	for i in get_tree().get_nodes_in_group("player"):
+				if i.name != "Player":
+					i.queue_free()

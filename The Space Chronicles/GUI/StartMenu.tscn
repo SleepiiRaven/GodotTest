@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Resources/Theme.tres" type="Theme" id=1]
 [ext_resource path="res://Resources/8-bit Arcade In.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://GUI/StartMenu.gd" type="Script" id=3]
 [ext_resource path="res://Art/background.png" type="Texture" id=4]
+[ext_resource path="res://Sound/StrangeForests.mp3" type="AudioStream" id=5]
 
 [sub_resource type="DynamicFont" id=1]
 size = 32
@@ -47,6 +48,10 @@ margin_bottom = 38.0
 text = "quit"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+autoplay = true
 
 [connection signal="pressed" from="MainMenu/StartBtn" to="." method="_on_StartBtn_pressed"]
 [connection signal="pressed" from="MainMenu/QuitBtn" to="." method="_on_QuitBtn_pressed"]

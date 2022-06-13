@@ -3,7 +3,7 @@ extends KinematicBody2D
 const BUL_SPD = 200
 const MIN_SPD = 0.5
 const MAX_SPD = 1
-var speed = 1
+var speed = MAX_SPD
 var vel = Vector2()
 
 var blt_cd = false

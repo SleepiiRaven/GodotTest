@@ -217,6 +217,7 @@ pause_mode = 2
 stream = ExtResource( 9 )
 
 [connection signal="dead" from="YSort/Player" to="." method="_on_Player_dead"]
+[connection signal="dead" from="YSort/EnemyBoss2" to="." method="_on_EnemyBoss2_dead"]
 [connection signal="animation_finished" from="CanvasLayer/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="timeout" from="BossKillTimer" to="." method="_on_BossKillTimer_timeout"]
 

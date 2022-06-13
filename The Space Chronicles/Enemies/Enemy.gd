@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 const MIN_SPD = 1.5
 const MAX_SPD = 3
-var speed = 3
+var speed = MAX_SPD
 var vel = Vector2()
 
 var powerup_chance = 10

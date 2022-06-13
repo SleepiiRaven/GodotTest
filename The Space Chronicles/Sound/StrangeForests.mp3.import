@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/StrangeForests.mp3-abc415c7abf94200c5aac85a9344f569.mp3str"
+
+[deps]
+
+source_file="res://Sound/StrangeForests.mp3"
+dest_files=[ "res://.import/StrangeForests.mp3-abc415c7abf94200c5aac85a9344f569.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

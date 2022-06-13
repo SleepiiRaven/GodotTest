@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://World.gd" type="Script" id=2]
@@ -7,11 +7,13 @@
 [ext_resource path="res://Art/thing.png" type="Texture" id=5]
 [ext_resource path="res://World/light.png" type="Texture" id=6]
 [ext_resource path="res://World/TileMap2.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Enemies/Enemy3.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Sound/DrowningInHatred.mp3" type="AudioStream" id=9]
 [ext_resource path="res://Enemies/Enemy2.tscn" type="PackedScene" id=10]
 [ext_resource path="res://GUI/DeathMenu.tscn" type="PackedScene" id=11]
 [ext_resource path="res://GUI/PauseMenu.tscn" type="PackedScene" id=12]
 [ext_resource path="res://GUI/PowerupGUI.tscn" type="PackedScene" id=13]
+[ext_resource path="res://Enemies/EnemyBoss3.tscn" type="PackedScene" id=14]
 
 [sub_resource type="Environment" id=4]
 background_mode = 4
@@ -50,7 +52,7 @@ tracks/0/keys = {
 "values": [ -60.0, 0.0 ]
 }
 
-[node name="World" type="Node2D"]
+[node name="World3" type="Node2D"]
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
@@ -77,6 +79,39 @@ shadow_enabled = true
 current = true
 zoom = Vector2( 1.5, 1.5 )
 smoothing_enabled = true
+
+[node name="EnemySpeed" parent="YSort" instance=ExtResource( 8 )]
+position = Vector2( 179, 119 )
+
+[node name="EnemySpeed2" parent="YSort" instance=ExtResource( 8 )]
+position = Vector2( -300, 319 )
+
+[node name="EnemySpeed4" parent="YSort" instance=ExtResource( 8 )]
+position = Vector2( -618, 130 )
+
+[node name="EnemySpeed5" parent="YSort" instance=ExtResource( 8 )]
+position = Vector2( -590, -78 )
+
+[node name="EnemySpeed6" parent="YSort" instance=ExtResource( 8 )]
+position = Vector2( -295, -188 )
+
+[node name="EnemySpeed7" parent="YSort" instance=ExtResource( 8 )]
+position = Vector2( 80, -188 )
+
+[node name="EnemySpeed8" parent="YSort" instance=ExtResource( 8 )]
+position = Vector2( 580, 124 )
+
+[node name="EnemySpeed9" parent="YSort" instance=ExtResource( 8 )]
+position = Vector2( 537, 349 )
+
+[node name="EnemySpeed10" parent="YSort" instance=ExtResource( 8 )]
+position = Vector2( 455, 557 )
+
+[node name="EnemySpeed11" parent="YSort" instance=ExtResource( 8 )]
+position = Vector2( 973, 624 )
+
+[node name="EnemySpeed3" parent="YSort" instance=ExtResource( 8 )]
+position = Vector2( -99, 391 )
 
 [node name="EnemyRanged" parent="YSort" instance=ExtResource( 10 )]
 position = Vector2( -492, 216 )
@@ -133,7 +168,7 @@ position = Vector2( 251, 222 )
 position = Vector2( 247, 447 )
 
 [node name="Enemy10" parent="YSort" instance=ExtResource( 4 )]
-position = Vector2( 468, 402 )
+position = Vector2( 561, 560 )
 
 [node name="Enemy11" parent="YSort" instance=ExtResource( 4 )]
 position = Vector2( 858, 573 )
@@ -158,6 +193,9 @@ position = Vector2( 972, 825 )
 
 [node name="Enemy18" parent="YSort" instance=ExtResource( 4 )]
 position = Vector2( 740, 173 )
+
+[node name="EnemyBoss3" parent="YSort" instance=ExtResource( 14 )]
+position = Vector2( 585, 1040 )
 
 [node name="CanvasLayer" parent="." instance=ExtResource( 3 )]
 
@@ -189,6 +227,7 @@ pause_mode = 2
 stream = ExtResource( 9 )
 
 [connection signal="dead" from="YSort/Player" to="." method="_on_Player_dead"]
+[connection signal="dead" from="YSort/EnemyBoss3" to="." method="_on_EnemyBoss3_dead"]
 [connection signal="animation_finished" from="CanvasLayer/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="timeout" from="BossKillTimer" to="." method="_on_BossKillTimer_timeout"]
 
