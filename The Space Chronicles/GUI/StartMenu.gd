@@ -5,6 +5,7 @@ func _unhandled_input(event):
 		OS.window_fullscreen = !OS.window_fullscreen
 
 func _on_StartBtn_pressed():
+# warning-ignore:return_value_discarded
 	get_tree().change_scene("res://World.tscn")
 
 func _on_QuitBtn_pressed():

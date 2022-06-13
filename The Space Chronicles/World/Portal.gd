@@ -16,6 +16,8 @@ func _ready():
 	$AnimationPlayer.play("Fade In")
 
 func _on_Area2D_body_entered(body):
+# warning-ignore:unused_variable
 	var next_scene = load(nextscene)
 	if "Player" in body.name:
+# warning-ignore:return_value_discarded
 		get_tree().change_scene(nextscene)

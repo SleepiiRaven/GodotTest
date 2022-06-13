@@ -13,6 +13,7 @@ var hp = 50
 var in_area = false
 var dead = false
 var blt_cd = false
+var throwaway_player_detected = false
 var player_detected = false
 var atk_circle_showing = false
 var stuck = false
@@ -62,6 +63,7 @@ func chase(pos):
 	
 	motion = motion.normalized() * speed
 
+# warning-ignore:return_value_discarded
 	move_and_collide(motion)
 
 func shoot(spd):
@@ -136,7 +138,15 @@ func _on_ShootCooldown_timeout():
 func _on_PlayerDetect_body_entered(body):
 	if "Player" in body.name:
 		player_detected = true
+		throwaway_player_detected = true
+	if "Bullet" in body.name:
+		player_detected = true
 
 func _on_PlayerDetect_body_exited(body):
-	if "Player" in body.name:
+	if "Player" in body.name || "Bullet" in body.name and !throwaway_player_detected:
+		player_detected = false
+	elif "Bullet" in body.name and throwaway_player_detected:
+		pass
+	elif "Player" in body.name and throwaway_player_detected:
+		throwaway_player_detected = false
 		player_detected = false

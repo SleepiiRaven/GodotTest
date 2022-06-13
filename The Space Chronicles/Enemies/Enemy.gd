@@ -33,6 +33,7 @@ func _physics_process(_delta):
 		motion = motion.normalized() * speed
 		
 
+# warning-ignore:return_value_discarded
 		move_and_collide(motion)
 		
 func _on_Hitbox_body_entered(body):

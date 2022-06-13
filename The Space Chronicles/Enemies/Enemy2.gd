@@ -36,6 +36,7 @@ func _physics_process(_delta):
 		motion = motion.normalized() * speed
 		
 
+# warning-ignore:return_value_discarded
 		move_and_collide(motion)
 		if !blt_cd and shoot_range:
 			randomize()

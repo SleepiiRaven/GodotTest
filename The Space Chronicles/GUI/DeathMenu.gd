@@ -9,6 +9,7 @@ func set_is_paused(value):
 
 func _on_RestartBtn_pressed():
 	self.is_paused = false
+# warning-ignore:return_value_discarded
 	get_tree().reload_current_scene()
 
 func _on_QuitBtn_pressed():
