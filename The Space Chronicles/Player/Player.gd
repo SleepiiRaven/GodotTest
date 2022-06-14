@@ -9,9 +9,9 @@ var ACC = 1000
 var FRI = 1000
 var BUL_SPD = 500
 var HP = 1
+var ALT_BUL_SPD = 200
 
-
-
+var unlocked_alt = false
 var invincible = false
 var current_powerup = null
 var shoot_cd = false
@@ -25,6 +25,7 @@ var doubled_now = false
 
 #Preloads
 var bullet = preload("res://Player/Bullet/Bullet.tscn")
+var alt_bullet = preload("res://Player/Bullet/AltBullet.tscn")
 
 func _ready():
 	pass
@@ -46,13 +47,16 @@ func _physics_process(delta):
 		#actual movement
 		move()
 		
+		if Input.is_action_pressed("alt_fire") and !shoot_cd and unlocked_alt:
+			alt_fire()
+			shoot_cd = true
+			$AltShootCooldown.start()
 		
 		if Input.is_action_pressed("fire") and !shoot_cd:
 			fire()
 			shoot_cd = true
 			$ShootCooldown.start()
-			
-	
+
 	match current_powerup:
 		"double":
 			picked_up_powerup = true
@@ -63,6 +67,7 @@ func _physics_process(delta):
 			BUL_SPD = 500
 			HP = 1
 			$ShootCooldown.wait_time = 0.1
+			$AltShootCooldown.wait_time = 0.5
 			shielded = false
 			tripled = false
 			doubled = true
@@ -79,6 +84,7 @@ func _physics_process(delta):
 			FRI = 1000
 			BUL_SPD = 500
 			$ShootCooldown.wait_time = 0.1
+			$AltShootCooldown.wait_time = 0.5
 			shielded = false
 			tripled = false
 			doubled = false
@@ -99,6 +105,7 @@ func _physics_process(delta):
 			doubled = false
 			BUL_SPD = 800
 			$ShootCooldown.wait_time = 0.08
+			$AltShootCooldown.wait_time = 0.4
 			$PowerupTimer.start()
 			for i in get_tree().get_nodes_in_group("player"):
 				if i.name != "Player":
@@ -112,6 +119,7 @@ func _physics_process(delta):
 			BUL_SPD = 500
 			HP = 1
 			$ShootCooldown.wait_time = 0.1
+			$AltShootCooldown.wait_time = 0.5
 			tripled = false
 			doubled = false
 			shielded = true
@@ -126,6 +134,7 @@ func _physics_process(delta):
 			BUL_SPD = 500
 			HP = 1
 			$ShootCooldown.wait_time = 0.1
+			$AltShootCooldown.wait_time = 0.5
 			shielded = false
 			doubled = false
 			picked_up_powerup = true
@@ -139,22 +148,37 @@ func _physics_process(delta):
 	if doubled and doubled_now:
 		var player_instance = load("res://Player/Player.tscn").instance()
 		player_instance.global_position = global_position + Vector2(0,20)
+		player_instance.unlocked_alt = unlocked_alt
 		get_parent().add_child(player_instance)
 		doubled_now = false
-		
 	
 	if picked_up_powerup:
 		$Powerup.play()
 		picked_up_powerup = false
-		
-
 
 func move():
 	vel = move_and_slide(vel)
 	look_at(get_global_mouse_position())
 
+func alt_fire():
+	var bullet_instance = alt_bullet.instance()
+	bullet_instance.position = get_global_position()
+	bullet_instance.rotation_degrees = rotation_degrees
+	bullet_instance.apply_impulse(Vector2(), Vector2(ALT_BUL_SPD, 0).rotated(rotation))
+	get_tree().get_root().call_deferred("add_child", bullet_instance)
+	if tripled:
+		var bullet_instance_2 = alt_bullet.instance()
+		bullet_instance_2.position = get_global_position()
+		bullet_instance_2.rotation_degrees = rotation_degrees
+		bullet_instance_2.apply_impulse(Vector2(), Vector2(ALT_BUL_SPD, 0).rotated(rotation))
+		get_tree().get_root().call_deferred("add_child", bullet_instance_2)
+		var bullet_instance_3 = alt_bullet.instance()
+		bullet_instance_3.position = get_global_position()
+		bullet_instance_3.rotation_degrees = rotation_degrees-45
+		bullet_instance_3.apply_impulse(Vector2(), Vector2(ALT_BUL_SPD, 0).rotated(rotation-45))
+		get_tree().get_root().call_deferred("add_child", bullet_instance_3)
+	$ShootSound.play()
 
-# GUN STUFF HERE! #
 func fire():
 	var bullet_instance = bullet.instance()
 	bullet_instance.position = get_global_position()
@@ -199,11 +223,6 @@ func _on_Hitbox_body_entered(body):
 					$Hit.play()
 					if HP == 1:
 						get_parent().get_parent().get_node("CanvasLayer").get_node("PowerupGUI").get_node("Sprite").texture = null
-		
-
-# ROLL STUFF HERE! #
-
-# ANIMATION STUFF HERE! #
 
 func _on_Timer_timeout():
 	shoot_cd = false
@@ -214,8 +233,6 @@ func _on_Invincibility_timeout():
 func _on_PowerupTimer_timeout():
 	$PowerupDeleteTimer.start()
 	get_parent().get_parent().get_node("CanvasLayer").get_node("PowerupGUI").get_node("BlinkAnimationPlayer").play("Start")
-	#make new timer that's less than powerup timer that makes it flash
-
 
 func _on_PowerupDeleteTimer_timeout():
 	MAX_SPD = 250
@@ -224,6 +241,7 @@ func _on_PowerupDeleteTimer_timeout():
 	BUL_SPD = 500
 	HP = 1
 	$ShootCooldown.wait_time = 0.1
+	$AltShootCooldown.wait_time = 0.5
 	shielded = false
 	tripled = false
 	doubled = false
@@ -232,3 +250,6 @@ func _on_PowerupDeleteTimer_timeout():
 	for i in get_tree().get_nodes_in_group("player"):
 				if i.name != "Player":
 					i.queue_free()
+
+func _on_AltShootCooldown_timeout():
+	shoot_cd = false

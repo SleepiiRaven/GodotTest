@@ -1,6 +1,6 @@
 extends RigidBody2D
 
-var damage = 1
+var damage = 3
 
 func _on_Timer_timeout():
 	queue_free()

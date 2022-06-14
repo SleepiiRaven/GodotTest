@@ -36,6 +36,10 @@ stream = ExtResource( 3 )
 wait_time = 0.1
 one_shot = true
 
+[node name="AltShootCooldown" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
 [node name="Invincibility" type="Timer" parent="."]
 wait_time = 0.5
 one_shot = true
@@ -56,6 +60,7 @@ one_shot = true
 
 [connection signal="body_entered" from="Hitbox" to="." method="_on_Hitbox_body_entered"]
 [connection signal="timeout" from="ShootCooldown" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="AltShootCooldown" to="." method="_on_AltShootCooldown_timeout"]
 [connection signal="timeout" from="Invincibility" to="." method="_on_Invincibility_timeout"]
 [connection signal="timeout" from="PowerupTimer" to="." method="_on_PowerupTimer_timeout"]
 [connection signal="timeout" from="PowerupDeleteTimer" to="." method="_on_PowerupDeleteTimer_timeout"]

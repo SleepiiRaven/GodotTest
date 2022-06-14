@@ -1,6 +1,8 @@
 extends KinematicBody2D
 
 signal dead
+signal found
+signal not_found
 
 const BUL_SPD = 600
 const SPE_BUL_SPD = 400
@@ -9,7 +11,8 @@ const MAX_SPD = 2.3
 var speed = 3.5
 var vel = Vector2()
 
-var hp = 100
+var max_hp = 100
+var hp = max_hp
 var in_area = false
 var dead = false
 var blt_cd = false
@@ -125,8 +128,9 @@ func lingering_attack():
 func _on_Hitbox_body_entered(body):
 	
 	if "Bullet" in body.name:
+		var damage = body.damage
 		if dead == false:
-			if hp == 1:
+			if hp <= damage:
 				var effect = deathEffect.instance()
 				effect.global_position = global_position
 				get_tree().current_scene.add_child(effect)
@@ -139,7 +143,7 @@ func _on_Hitbox_body_entered(body):
 				dead = true
 				effect.connect("exploded", self, "die")
 			else:
-				hp -= 1
+				hp -= damage
 				$ExplosionSound.play()
 
 func die():
@@ -174,6 +178,7 @@ func _on_PlayerDetect_body_entered(body):
 	if "Player" in body.name:
 		player_detected = true
 		throwaway_player_detected = true
+		emit_signal("found")
 	if "Bullet" in body.name:
 		player_detected = true
 
@@ -185,3 +190,4 @@ func _on_PlayerDetect_body_exited(body):
 	elif "Player" in body.name and throwaway_player_detected:
 		throwaway_player_detected = false
 		player_detected = false
+		emit_signal("not_found")

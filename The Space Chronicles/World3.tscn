@@ -199,7 +199,10 @@ position = Vector2( 585, 1040 )
 
 [node name="CanvasLayer" parent="." instance=ExtResource( 3 )]
 
-[node name="BossKillText" parent="CanvasLayer" index="1"]
+[node name="BossKillText" parent="CanvasLayer" index="2"]
+visible = false
+
+[node name="TutorialText" parent="CanvasLayer" index="3"]
 visible = false
 
 [node name="PowerupGUI" parent="CanvasLayer" instance=ExtResource( 13 )]
@@ -216,6 +219,10 @@ environment = SubResource( 4 )
 wait_time = 5.0
 one_shot = true
 
+[node name="TutorialFadeTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
 [node name="MusicOff" type="AnimationPlayer" parent="."]
 pause_mode = 2
 root_node = NodePath("../MusicPlayer")
@@ -228,7 +235,11 @@ stream = ExtResource( 9 )
 
 [connection signal="dead" from="YSort/Player" to="." method="_on_Player_dead"]
 [connection signal="dead" from="YSort/EnemyBoss3" to="." method="_on_EnemyBoss3_dead"]
+[connection signal="found" from="YSort/EnemyBoss3" to="." method="_on_EnemyBoss3_found"]
+[connection signal="not_found" from="YSort/EnemyBoss3" to="." method="_on_EnemyBoss3_not_found"]
 [connection signal="animation_finished" from="CanvasLayer/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
+[connection signal="animation_finished" from="CanvasLayer/AnimationPlayerTutorial" to="." method="_on_AnimationPlayerTutorial_animation_finished"]
 [connection signal="timeout" from="BossKillTimer" to="." method="_on_BossKillTimer_timeout"]
+[connection signal="timeout" from="TutorialFadeTimer" to="." method="_on_TutorialFadeTimer_timeout"]
 
 [editable path="CanvasLayer"]

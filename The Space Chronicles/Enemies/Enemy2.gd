@@ -56,7 +56,8 @@ func shoot(spd):
 
 func _on_Hitbox_body_entered(body):
 	if "Bullet" in body.name:
-		if dead == false and health == 1:
+		var damage = body.damage
+		if dead == false and health <= damage:
 			var effect = deathEffect.instance()
 			effect.global_position = global_position
 			get_tree().current_scene.add_child(effect)
@@ -75,7 +76,7 @@ func _on_Hitbox_body_entered(body):
 				get_tree().current_scene.call_deferred("add_child", powerup_instance)
 		elif dead == false:
 			$ExplosionSound.play()
-			health -= 1
+			health -= damage
 
 func die():
 	queue_free()
