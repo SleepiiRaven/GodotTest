@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://World.gd" type="Script" id=2]
@@ -47,6 +47,21 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
 "values": [ -60.0, 0.0 ]
+}
+
+[sub_resource type="Animation" id=8]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("MusicPlayer:volume_db")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ -30.0 ]
 }
 
 [node name="World" type="Node2D"]
@@ -176,10 +191,12 @@ one_shot = true
 pause_mode = 2
 anims/MusicFade = SubResource( 5 )
 anims/MusicIn = SubResource( 7 )
+anims/RESET = SubResource( 8 )
 
 [node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
 pause_mode = 2
 stream = ExtResource( 9 )
+volume_db = -30.0
 
 [connection signal="dead" from="YSort/Player" to="." method="_on_Player_dead"]
 [connection signal="dead" from="YSort/EnemyBoss" to="." method="_on_EnemyBoss_dead"]

@@ -10,7 +10,6 @@ extents = Vector2( 4, 1.5 )
 extents = Vector2( 4, 1.5 )
 
 [node name="EnemyBlt" type="RigidBody2D"]
-collision_mask = 2
 gravity_scale = 0.0
 script = ExtResource( 2 )
 

@@ -1,12 +1,12 @@
 extends KinematicBody2D
 
-const MIN_SPD = 1.5
-const MAX_SPD = 3
+var MIN_SPD = 1.5*Settings.difficulty
+var MAX_SPD = 3*Settings.difficulty
 var speed = MAX_SPD
 var vel = Vector2()
 
 var powerup_chance = 10
-var health = 3
+var health = 3*Settings.difficulty
 var in_area = false
 var dead = false
 

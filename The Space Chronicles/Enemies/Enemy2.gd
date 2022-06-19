@@ -1,8 +1,8 @@
 extends KinematicBody2D
 
-const BUL_SPD = 200
-const MIN_SPD = 0.5
-const MAX_SPD = 1
+var BUL_SPD = 200*Settings.difficulty
+var MIN_SPD = 0.5*Settings.difficulty
+var MAX_SPD = 1*Settings.difficulty
 var speed = MAX_SPD
 var vel = Vector2()
 
@@ -11,7 +11,7 @@ var in_area = false
 var shoot_range = false
 
 var powerup_chance = 10
-var health = 1
+var health = 1*Settings.difficulty
 var dead = false
 
 var bullet = preload("res://Enemies/EnemyBullet/EnemyBlt.tscn")

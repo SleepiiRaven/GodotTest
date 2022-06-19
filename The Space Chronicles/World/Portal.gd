@@ -19,5 +19,8 @@ func _on_Area2D_body_entered(body):
 # warning-ignore:unused_variable
 	var next_scene = load(nextscene)
 	if "Player" in body.name:
-# warning-ignore:return_value_discarded
+		if body.saved_powerup != null:
+			Settings.powerup = body.saved_powerup
+			Settings.powerup_time = body.get_node("PowerupTimer").time_left + body.get_node("PowerupDeleteTimer").time_left
+		# warning-ignore:return_value_discarded
 		get_tree().change_scene(nextscene)

@@ -4,14 +4,14 @@ signal dead
 signal found
 signal not_found
 
-const BUL_SPD = 500
-const SPE_BUL_SPD = 300
-const MIN_SPD = .4
-const MAX_SPD = 2
-var speed = 2
+var BUL_SPD = 500*Settings.difficulty
+var SPE_BUL_SPD = 300*Settings.difficulty
+var MIN_SPD = .4*Settings.difficulty
+var MAX_SPD = 2*Settings.difficulty
+var speed = MAX_SPD
 var vel = Vector2()
 
-var max_hp = 50
+var max_hp = 50*Settings.difficulty
 var hp = max_hp
 var in_area = false
 var dead = false

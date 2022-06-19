@@ -16,11 +16,12 @@ resource_name = "LowPassFilter"
 resource_name = "LowPassFilter"
 
 [resource]
+bus/0/volume_db = -10.0393
 bus/1/name = "Muffle"
 bus/1/solo = false
 bus/1/mute = false
 bus/1/bypass_fx = false
-bus/1/volume_db = 0.0
+bus/1/volume_db = -5.01718
 bus/1/send = "Master"
 bus/1/effect/0/effect = SubResource( 1 )
 bus/1/effect/0/enabled = true

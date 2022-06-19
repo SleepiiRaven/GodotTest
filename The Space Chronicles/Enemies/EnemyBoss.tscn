@@ -46,6 +46,8 @@ tracks/0/keys = {
 radius = 200.003
 
 [node name="EnemyBoss" type="KinematicBody2D" groups=["enemy"]]
+collision_layer = 3
+collision_mask = 3
 script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -59,6 +61,8 @@ scale = Vector2( 1.8, 1.8 )
 texture = ExtResource( 1 )
 
 [node name="Hitbox" type="Area2D" parent="." groups=["boss"]]
+collision_layer = 3
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 scale = Vector2( 0.5, 0.5 )

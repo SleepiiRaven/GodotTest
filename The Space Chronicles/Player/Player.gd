@@ -11,6 +11,7 @@ var BUL_SPD = 500
 var HP = 1
 var ALT_BUL_SPD = 200
 
+var saved_powerup = null
 var unlocked_alt = false
 var invincible = false
 var current_powerup = null
@@ -23,12 +24,47 @@ var doubled = false
 var tripled = false
 var doubled_now = false
 
+var double = preload("res://Art/doublepowerup.png")
+var health = preload("res://Art/healthpowerup.png")
+var speed = preload("res://Art/lightningpowerup.png")
+var shield = preload("res://Art/shieldpowerup.png")
+var triple = preload("res://Art/tripleshot.png")
+
 #Preloads
 var bullet = preload("res://Player/Bullet/Bullet.tscn")
 var alt_bullet = preload("res://Player/Bullet/AltBullet.tscn")
 
 func _ready():
-	pass
+	current_powerup = Settings.powerup
+	
+	match current_powerup:
+		"double":
+			get_parent().get_parent().get_node("CanvasLayer").get_node("PowerupGUI").get_node("Sprite").texture = double
+		"health":
+			get_parent().get_parent().get_node("CanvasLayer").get_node("PowerupGUI").get_node("Sprite").texture = health
+		"speed":
+			get_parent().get_parent().get_node("CanvasLayer").get_node("PowerupGUI").get_node("Sprite").texture = speed
+		"shield":
+			get_parent().get_parent().get_node("CanvasLayer").get_node("PowerupGUI").get_node("Sprite").texture = shield
+		"triple":
+			get_parent().get_parent().get_node("CanvasLayer").get_node("PowerupGUI").get_node("Sprite").texture = triple
+	
+	if current_powerup != null:
+		if Settings.powerup_time > $PowerupDeleteTimer.wait_time:
+			$PowerupTimer.wait_time = Settings.powerup_time - $PowerupDeleteTimer.wait_time
+			$PowerupTimer.start()
+		
+		elif Settings.powerup_time <= .1:
+			current_powerup = null
+			get_parent().get_parent().get_node("CanvasLayer").get_node("PowerupGUI").get_node("Sprite").texture = null
+		
+		else:
+			print("hi")
+			$PowerupDeleteTimer.wait_time = Settings.powerup_time
+			get_parent().get_parent().get_node("CanvasLayer").get_node("PowerupGUI").get_node("BlinkAnimationPlayer").play("Start")
+			$PowerupDeleteTimer.start()
+	
+	Settings.powerup = null
 
 func _physics_process(delta):
 	if !dead:
@@ -59,6 +95,7 @@ func _physics_process(delta):
 
 	match current_powerup:
 		"double":
+			saved_powerup = "double"
 			picked_up_powerup = true
 			current_powerup = null
 			MAX_SPD = 250
@@ -77,6 +114,7 @@ func _physics_process(delta):
 				if i.name != "Player":
 					i.queue_free()
 		"health":
+			saved_powerup = "health"
 			picked_up_powerup = true
 			current_powerup = null
 			MAX_SPD = 250
@@ -94,6 +132,7 @@ func _physics_process(delta):
 				if i.name != "Player":
 					i.queue_free()
 		"speed":
+			saved_powerup = "speed"
 			picked_up_powerup = true
 			current_powerup = null
 			MAX_SPD = 250
@@ -111,6 +150,7 @@ func _physics_process(delta):
 				if i.name != "Player":
 					i.queue_free()
 		"shield":
+			saved_powerup = "shield"
 			picked_up_powerup = true
 			current_powerup = null
 			MAX_SPD = 250
@@ -128,6 +168,7 @@ func _physics_process(delta):
 				if i.name != "Player":
 					i.queue_free()
 		"triple":
+			saved_powerup = "triple"
 			MAX_SPD = 250
 			ACC = 1000
 			FRI = 1000
@@ -235,6 +276,9 @@ func _on_PowerupTimer_timeout():
 	get_parent().get_parent().get_node("CanvasLayer").get_node("PowerupGUI").get_node("BlinkAnimationPlayer").play("Start")
 
 func _on_PowerupDeleteTimer_timeout():
+	$PowerupTimer.wait_time = 25
+	$PowerupDeleteTimer.wait_time = 5
+	saved_powerup = null
 	MAX_SPD = 250
 	ACC = 1000
 	FRI = 1000
@@ -248,8 +292,8 @@ func _on_PowerupDeleteTimer_timeout():
 	get_parent().get_parent().get_node("CanvasLayer").get_node("PowerupGUI").get_node("BlinkAnimationPlayer").play("Stop")
 	get_parent().get_parent().get_node("CanvasLayer").get_node("PowerupGUI").get_node("Sprite").texture = null
 	for i in get_tree().get_nodes_in_group("player"):
-				if i.name != "Player":
-					i.queue_free()
+		if i.name != "Player":
+			i.queue_free()
 
 func _on_AltShootCooldown_timeout():
 	shoot_cd = false

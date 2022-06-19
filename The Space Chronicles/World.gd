@@ -111,3 +111,5 @@ func _on_EnemyBoss2_not_found():
 func _on_EnemyBoss3_not_found():
 	$CanvasLayer/BossBar.visible = false
 	bossbar_showing = false
+	bossbar_showing = false
+	bossbar_showing = false

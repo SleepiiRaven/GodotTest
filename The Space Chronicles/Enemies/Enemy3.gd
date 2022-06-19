@@ -1,15 +1,14 @@
 extends KinematicBody2D
 
-const BUL_SPD = 200
-const MIN_SPD = 2.5
-const MAX_SPD = 5
+var MIN_SPD = 2.5*Settings.difficulty
+var MAX_SPD = 5*Settings.difficulty
 var speed = MAX_SPD
 var vel = Vector2()
 
 var in_area = false
 
 var powerup_chance = 10
-var health = 1
+var health = 1*Settings.difficulty
 var dead = false
 
 var deathEffect = preload("res://Enemies/EnemyExplosion.tscn")
